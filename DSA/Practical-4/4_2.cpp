@@ -1,6 +1,5 @@
 #include<iostream>
 using namespace std;
-
 struct node
 {
     int data;
@@ -11,19 +10,23 @@ struct node
         next=nullptr;
     }
 };
-
-void deletionbyvalue(node*& head, int val)
+void deletionbyvalue(node*& head,int val)
 {
     if(head==nullptr)
     {
         cout<<"Empty list"<<endl;
         return;
     }
-    node* temp=head;
-    while(temp->next->data!=val&&temp->next!=nullptr)
+    if(head->data==val)
     {
-        temp=temp->next;
+        node* p=head;
+        head=head->next;
+        delete p;
+        return;
     }
+    node* temp=head;
+    while(temp->next!=nullptr&&temp->next->data!=val)
+        temp=temp->next;
     if(temp->next==nullptr)
     {
         cout<<"Not found"<<endl;
@@ -32,21 +35,12 @@ void deletionbyvalue(node*& head, int val)
     node* p=temp->next;
     temp->next=p->next;
     delete p;
-
-    node* d=head;
-    cout<<"After deletion by value (here 20): ";
-    while (d != nullptr)
-    {
-        cout<<d->data<<" ";
-        d=d->next;
-    }
-    cout<<endl;
 }
-
 void reverseprinting(node*& head)
 {
     node* prev=nullptr;
     node* curr=head;
+
     while(curr!=nullptr)
     {
         node* next=curr->next;
@@ -54,19 +48,22 @@ void reverseprinting(node*& head)
         prev=curr;
         curr=next;
     }
-    head=prev;
 
-    node* d=head;
-    cout<<"Reverse printed: ";
-    while (d != nullptr)
-    {
-        cout<<d->data<<" ";
-        d=d->next;
-    }
-    cout<<endl;
+    head=prev;
 }
 
+void display(node* head)
+{
+    node* temp=head;
 
+    while(temp!=nullptr)
+    {
+        cout<<temp->data<<" ";
+        temp=temp->next;
+    }
+
+    cout<<endl;
+}
 
 int main()
 {
@@ -79,17 +76,19 @@ int main()
     n1->next=n2;
     n2->next=n3;
     n3->next=n4;
-    node* temp=head;
 
     cout<<"Original: ";
-    while (temp != nullptr)
-    {
-        cout<<temp->data<<" ";
-        temp = temp->next;
-    }
-    cout<<endl;
+    display(head);
 
-    deletionbyvalue(head, 20);
+    deletionbyvalue(head,20);
+
+    cout<<"After deletion: ";
+    display(head);
+
     reverseprinting(head);
+
+    cout<<"Reverse: ";
+    display(head);
+
     return 0;
 }

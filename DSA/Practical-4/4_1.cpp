@@ -1,6 +1,5 @@
 #include<iostream>
 using namespace std;
-
 struct node
 {
     int data;
@@ -8,79 +7,66 @@ struct node
     node(int val)
     {
         data=val;
-        next=nullptr;
+        next=NULL;
     }
 };
-void criticalPatients(node*& head, int val)
+void insertAtBeginning(node*& head,int val)
 {
     node* newnode=new node(val);
     newnode->next=head;
     head=newnode;
-    node* p=head;
-    cout<<"At the beginning: ";
-    while (p != nullptr)
-    {
-        cout<<p->data<<" ";
-        p = p->next;
-    }
-    cout<<endl;
 }
-void routinePatients(node*& head, int val)
+void insertAtEnd(node*& head,int val)
 {
     node* newnode=new node(val);
-    newnode->next=nullptr;
-    if(head==nullptr)
+
+    if(head==NULL)
     {
         head=newnode;
         return;
     }
     node* temp=head;
-    while(temp->next!=nullptr)
-    {
+    while(temp->next!=NULL)
         temp=temp->next;
-    }
-    temp->next=newnode;
 
-    node* p=head;
-    cout<<"At the end: ";
-    while (p != nullptr)
-    {
-        cout<<p->data<<" ";
-        p = p->next;
-    }
-    cout<<endl;
+    temp->next=newnode;
 }
-void priorityPatients(node*& head, int val, int pos)
+void insertAtPosition(node*& head,int val,int pos)
 {
     if(pos==1)
     {
-        criticalPatients(head, val);
+        insertAtBeginning(head,val);
         return;
     }
     node* newnode=new node(val);
     node* temp=head;
-    for(int i=1; i<pos-1&&temp!=nullptr; i++)
+    for(int i=1;i<pos-1;i++)
     {
+        if(temp==NULL)
+        {
+            cout<<"Invalid position"<<endl;
+            return;
+        }
         temp=temp->next;
     }
-    if(temp==nullptr)
+    if(temp==NULL)
     {
         cout<<"Invalid position"<<endl;
         return;
     }
     newnode->next=temp->next;
     temp->next=newnode;
-
-    node* p=head;
-    cout<<"At the position: ";
-    while (p != nullptr)
+}
+void display(node* head)
+{
+    node* temp=head;
+    while(temp!=NULL)
     {
-        cout<<p->data<<" ";
-        p=p->next;
+        cout<<temp->data<<" ";
+        temp=temp->next;
     }
     cout<<endl;
 }
-
 int main()
 {
     node* n1=new node(10);
@@ -90,20 +76,20 @@ int main()
     node* head=n1;
     n1->next=n2;
     n2->next=n3;
-    node* temp=head;
-
     cout<<"Original: ";
-    while (temp != nullptr)
-    {
-        cout<<temp->data<<" ";
-        temp = temp->next;
-    }
-    cout<<endl;
+    display(head);
 
-    criticalPatients(head, 5);
-    routinePatients(head, 40);
-    priorityPatients(head, 25, 4);
+    insertAtBeginning(head,5);
+    cout<<"Beginning: ";
+    display(head);
 
+    insertAtEnd(head,40);
+    cout<<"End: ";
+    display(head);
+
+    insertAtPosition(head,25,4);
+    cout<<"Position: ";
+    display(head);
 
     return 0;
 }
